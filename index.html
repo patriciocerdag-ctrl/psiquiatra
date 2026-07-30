@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b4773">
+  <meta name="description" content="Portal de acceso rápido a herramientas, sistemas clínicos y documentación.">
+  <title>Portal de Acceso Rápido</title>
+
+  <style>
+    :root {
+      --blue: #0b4773;
+      --blue-strong: #173f80;
+      --blue-soft: #eaf0ff;
+      --page: #f5f6fa;
+      --surface: #ffffff;
+      --surface-muted: #f1f1f1;
+      --text: #111318;
+      --muted: #a7a9ae;
+      --border: #b9bbc1;
+      --shadow: 0 10px 26px rgba(12, 37, 66, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 13px;
+      --gap: clamp(12px, 1.2vw, 18px);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: light;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-width: 280px;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.25;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(100%, 1480px);
+      margin-inline: auto;
+      padding: clamp(18px, 2.4vw, 36px);
+      padding-bottom: max(30px, env(safe-area-inset-bottom));
+    }
+
+    .hero {
+      margin-bottom: clamp(12px, 1.5vw, 20px);
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--blue-strong);
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+
+    .hero p {
+      margin: 8px 0 0;
+      color: #606167;
+      font-size: clamp(1.05rem, 1.9vw, 1.7rem);
+    }
+
+    .quick-panel {
+      position: relative;
+      margin-bottom: clamp(18px, 2vw, 26px);
+      padding: clamp(34px, 3vw, 44px) clamp(14px, 1.8vw, 22px) clamp(16px, 1.8vw, 22px);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      box-shadow: 0 2px 0 rgba(255,255,255,.85), var(--shadow);
+    }
+
+    .quick-title {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      margin: 0;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: clamp(.88rem, 1.3vw, 1.12rem);
+      font-weight: 800;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr .62fr .78fr .62fr 1.2fr .82fr .62fr 1fr;
+      gap: 10px;
+    }
+
+    .quick-button,
+    .access-card {
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .quick-button {
+      min-width: 0;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: #fafbfe;
+      font-size: clamp(1rem, 1.4vw, 1.35rem);
+      font-weight: 800;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    .quick-button:hover {
+      transform: translateY(-2px);
+      border-color: #7588aa;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(10, 45, 78, .11);
+    }
+
+    .quick-button:active {
+      transform: translateY(0);
+    }
+
+    .quick-button:focus-visible,
+    .access-card:focus-visible {
+      outline: 3px solid rgba(28, 69, 135, .38);
+      outline-offset: 3px;
+    }
+
+    .quick-button.gemini {
+      border-color: #000;
+      background: #000;
+      color: #fff;
+    }
+
+    .quick-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      color: #111318;
+    }
+
+    .quick-icon svg,
+    .card-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .quick-label {
+      min-width: 0;
+      text-wrap: balance;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(22px, 5.5vw, 84px);
+      align-items: start;
+    }
+
+    .portal-panel {
+      min-width: 0;
+    }
+
+    .panel-heading {
+      min-height: 59px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 12px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(11, 71, 115, .15);
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 1.72rem);
+      line-height: 1.1;
+    }
+
+    .panel-heading span {
+      color: #c0c2c8;
+      font-size: clamp(.83rem, 1.2vw, 1.05rem);
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .group {
+      margin-top: 12px;
+    }
+
+    .group-title {
+      margin: 0 2px 7px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid #c3c4c8;
+      color: #b0b1b5;
+      font-size: clamp(.95rem, 1.35vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: .01em;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .access-card {
+      grid-column: span 3;
+      min-width: 0;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 9px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    .access-card:hover {
+      transform: translateY(-2px);
+      border-color: #7b8ba8;
+      background: #fff;
+      box-shadow: 0 7px 18px rgba(12, 39, 65, .10);
+    }
+
+    .access-card:active {
+      transform: translateY(0);
+    }
+
+    .access-card.span-1 { grid-column: span 1; }
+    .access-card.span-2 { grid-column: span 2; }
+    .access-card.span-4 { grid-column: span 4; }
+    .access-card.span-5 { grid-column: span 5; }
+    .access-card.span-6 { grid-column: 1 / -1; }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      flex: 0 0 52px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--blue-soft);
+      color: #0d1016;
+    }
+
+    .card-icon.compact {
+      width: 45px;
+      height: 45px;
+      flex-basis: 45px;
+      padding: 7px;
+    }
+
+    .card-copy {
+      min-width: 0;
+    }
+
+    .card-copy strong {
+      display: block;
+      font-size: clamp(1rem, 1.65vw, 1.35rem);
+      line-height: 1.08;
+      overflow-wrap: anywhere;
+    }
+
+    .card-copy small {
+      display: block;
+      margin-top: 3px;
+      color: #b3b4b8;
+      font-size: clamp(.86rem, 1.35vw, 1.12rem);
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .subpanel {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      background: var(--surface-muted);
+    }
+
+    .subpanel .card-grid {
+      gap: 12px;
+    }
+
+    .mail-card {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .mail-card:hover {
+      border-color: #08395e;
+      background: #083f69;
+      box-shadow: 0 9px 22px rgba(11, 71, 115, .24);
+    }
+
+    .mail-card .card-icon {
+      background: #eaf0ff;
+      color: #111318;
+    }
+
+    .mail-card .card-copy small {
+      color: #b8bbc2;
+    }
+
+    .wordmark {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -.08em;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1180px) {
+      .quick-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .quick-button.icon-only .quick-label {
+        display: inline;
+      }
+
+      .main-grid {
+        gap: 26px;
+      }
+
+      .access-card,
+      .access-card.span-1,
+      .access-card.span-2,
+      .access-card.span-4,
+      .access-card.span-5 {
+        grid-column: span 3;
+      }
+    }
+
+    @media (max-width: 880px) {
+      .page {
+        padding-inline: clamp(14px, 3.5vw, 26px);
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .panel-heading {
+        position: sticky;
+        top: 8px;
+        z-index: 5;
+      }
+
+      .access-card,
+      .access-card.span-1,
+      .access-card.span-2,
+      .access-card.span-4,
+      .access-card.span-5 {
+        grid-column: span 3;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding-top: 18px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.8rem, 9vw, 2.35rem);
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .quick-panel {
+        padding-inline: 12px;
+      }
+
+      .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .quick-button {
+        min-height: 68px;
+        justify-content: flex-start;
+        padding: 9px 10px;
+        font-size: .98rem;
+      }
+
+      .quick-icon {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+      }
+
+      .panel-heading {
+        min-height: 54px;
+        padding-inline: 16px;
+      }
+
+      .panel-heading span {
+        max-width: 47%;
+        white-space: normal;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .access-card,
+      .access-card.span-1,
+      .access-card.span-2,
+      .access-card.span-4,
+      .access-card.span-5,
+      .access-card.span-6 {
+        grid-column: 1;
+      }
+
+      .access-card {
+        min-height: 70px;
+      }
+
+      .card-copy strong {
+        font-size: 1.1rem;
+      }
+
+      .card-copy small {
+        font-size: .94rem;
+      }
+
+      .subpanel {
+        margin-inline: -2px;
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-button {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (min-width: 1181px) {
+      .quick-button.icon-only .quick-label {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; padding: 0; }
+      .panel-heading { position: static; }
+      .quick-button, .access-card { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <h1>Portal de Acceso Rápido</h1>
+      <p>Selecciona la acción que deseas realizar</p>
+    </header>
+
+    <section class="quick-panel" aria-labelledby="quick-tools-title">
+      <h2 class="quick-title" id="quick-tools-title">HERRAMIENTAS RÁPIDAS</h2>
+      <nav class="quick-grid" aria-label="Herramientas rápidas">
+        <a class="quick-button" href="https://drive.google.com/drive/u/0/home" target="_blank" rel="noopener noreferrer">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 34H11a8 8 0 0 1-1-15.9A12 12 0 0 1 33 17a8.5 8.5 0 0 1 4 16H33"/><path d="M24 17v19m0 0-7-7m7 7 7-7"/></svg>
+          </span>
+          <span class="quick-label">Google<br>Drive</span>
+        </a>
+
+        <a class="quick-button" href="https://mail.google.com/mail/u/0/?tab=rm&amp;ogbl#inbox" target="_blank" rel="noopener noreferrer">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><rect x="4" y="9" width="40" height="30" rx="2"/><path d="m5 11 19 16 19-16"/></svg>
+          </span>
+          <span class="quick-label">Gmail</span>
+        </a>
+
+        <a class="quick-button icon-only" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir ChatGPT">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5a9 9 0 0 1 8.1 5.1A9 9 0 0 1 42 19a9 9 0 0 1-3.5 7.1A9 9 0 0 1 31 39a9 9 0 0 1-14.1-1.1A9 9 0 0 1 6 29a9 9 0 0 1 3.5-7.1A9 9 0 0 1 17 9a9 9 0 0 1 7-4Z"/><path d="m17 9 14 8v14M9.5 21.9 24 30l14.5-3.9M16.9 37.9V21l15.2-10.9"/></svg>
+          </span>
+          <span class="quick-label">ChatGPT</span>
+        </a>
+
+        <a class="quick-button gemini icon-only" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" aria-label="Abrir Gemini">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="g" x1="8" y1="40" x2="40" y2="8" gradientUnits="userSpaceOnUse"><stop stop-color="#3fd6ff"/><stop offset=".45" stop-color="#8754ff"/><stop offset="1" stop-color="#ffca45"/></linearGradient></defs><path d="M24 3c2.4 11 9.7 18.3 21 21-11.3 2.7-18.6 10-21 21-2.4-11-9.7-18.3-21-21C14.3 21.3 21.6 14 24 3Z" fill="url(#g)"/></svg>
+          </span>
+          <span class="quick-label">Gemini</span>
+        </a>
+
+        <a class="quick-button icon-only" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer" aria-label="Abrir Claude">
+          <span class="quick-icon" aria-hidden="true" style="color:#c9795f">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M24 4v40M9.9 9.9l28.2 28.2M4 24h40M9.9 38.1 38.1 9.9M16.3 5.4l15.4 37.2M5.4 31.7l37.2-15.4M5.4 16.3l37.2 15.4M16.3 42.6 31.7 5.4"/></svg>
+          </span>
+          <span class="quick-label">Claude</span>
+        </a>
+
+        <a class="quick-button" href="https://patriciocerdag-ctrl.github.io/mi-sitio-web/" target="_blank" rel="noopener noreferrer">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 39V8m0 31h35"/><path d="m12 32 8-9 7 5 10-15"/></svg>
+          </span>
+          <span class="quick-label">Escalas</span>
+        </a>
+
+        <a class="quick-button icon-only" href="https://calendar.google.com/calendar/u/0/r" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Calendar">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9" width="36" height="34" rx="3"/><path d="M15 5v8M33 5v8M6 18h36M14 25h5m5 0h5m5 0h2M14 33h5m5 0h5m5 0h2"/></svg>
+          </span>
+          <span class="quick-label">Calendario</span>
+        </a>
+
+        <a class="quick-button icon-only" href="https://patriciocerdag-ctrl.github.io/calculadora/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Calculadora">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"><rect x="9" y="4" width="30" height="40" rx="3"/><rect x="14" y="9" width="20" height="8"/><path d="M15 23h4m5 0h4m5 0h1M15 30h4m5 0h4m5 0h1M15 37h4m5 0h4m5 0h1"/></svg>
+          </span>
+          <span class="quick-label">Calculadora</span>
+        </a>
+
+        <a class="quick-button" href="https://keep.google.com/u/0/" target="_blank" rel="noopener noreferrer">
+          <span class="quick-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M8 13h22v28H8z"/><path d="M18 8h22v28H30V13H18zM13 20h12M13 27h12M13 34h8"/><path d="m33 11 3-6 2 6 6 3-6 2-2 6-3-6-6-2 6-3Z" fill="currentColor" stroke="none"/></svg>
+          </span>
+          <span class="quick-label">Notas</span>
+        </a>
+      </nav>
+    </section>
+
+    <div class="main-grid">
+      <section class="portal-panel" aria-labelledby="enlace-title">
+        <header class="panel-heading">
+          <h2 id="enlace-title">Accesos Enlace</h2>
+          <span>HBLT</span>
+        </header>
+
+        <section class="group" aria-labelledby="registro-title">
+          <h3 class="group-title" id="registro-title">REGISTRO CLÍNICO</h3>
+          <div class="card-grid">
+            <a class="access-card" href="https://docs.google.com/spreadsheets/d/1YN2-pa3T2yB3IzuRPKTJbR4Z04oK3AG6pQObl3Wiw-g/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#4263ad" stroke-width="2.4" stroke-linejoin="round"><rect x="8" y="7" width="31" height="34" rx="3"/><path d="M8 17h31M18 7v34M28 17v24M8 28h31"/></svg></span>
+              <span class="card-copy"><strong>Tabla de pacientes</strong><small>Edición</small></span>
+            </a>
+
+            <a class="access-card" href="https://salud.intersystemschile.cl/sdsr/" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#4263ad" stroke-width="2.4" stroke-linecap="round"><path d="M12 39h24M24 10v29M16 10h16M15 18h7m4 0h7M19 10l-4 8m14-8 4 8"/><path d="M7 32h10M12 27v10"/></svg></span>
+              <span class="card-copy"><strong>TrakCare</strong><small>Ficha clínica</small></span>
+            </a>
+          </div>
+        </section>
+
+        <section class="group" aria-labelledby="gestion-title">
+          <h3 class="group-title" id="gestion-title">GESTIÓN Y ESTADÍSTICA</h3>
+          <div class="card-grid">
+            <a class="access-card span-2" href="https://docs.google.com/spreadsheets/d/1r6e5ONlUgOOWc3Zr6sDL3yS_I3qRm9_P5wIidaEOdOE/edit?gid=738477232#gid=738477232" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#4263ad" stroke-width="2.5"><ellipse cx="24" cy="10" rx="13" ry="5"/><path d="M11 10v12c0 2.8 5.8 5 13 5s13-2.2 13-5V10M11 22v12c0 2.8 5.8 5 13 5s13-2.2 13-5V22"/></svg></span>
+              <span class="card-copy"><strong>Base de datos</strong></span>
+            </a>
+
+            <a class="access-card span-2" href="https://drive.google.com/drive/folders/1e5xKBx3ODE7Nt29FgyZXELm6Xb_UpZlE?usp=drive_link" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 40V13m0 27h34M15 35V25m8 10V15m8 20V21m8 14V9"/></svg></span>
+              <span class="card-copy"><strong>REM</strong></span>
+            </a>
+
+            <a class="access-card span-2" href="https://docs.google.com/forms/d/e/1FAIpQLSfomBx2HRljbWza6oRnQbLQUhtgF56_UJXJlFYBSIwDSuMN3Q/viewform" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M12 5h17l8 8v30H12z"/><path d="M29 5v9h8M24 21v14M17 28h14"/></svg></span>
+              <span class="card-copy"><strong>Forms</strong></span>
+            </a>
+
+            <a class="access-card" href="https://docs.google.com/document/d/1JRKPYlIlgw8_tALdkRFm2YWXE6TX8pLh/edit" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M9 11h25v25H9z"/><path d="M9 11h12l3 5h16v20h-6"/><circle cx="16" cy="34" r="6"/><path d="m20 38 5 5"/></svg></span>
+              <span class="card-copy"><strong>Documento</strong><small>Rotación Enlace</small></span>
+            </a>
+
+            <a class="access-card" href="https://drive.google.com/drive/folders/1mn-FFcPTzDQM6YDibGQbRrXks2q0Mptk" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M8 9h32v30H8z"/><path d="M24 9v30M8 24h32"/><path d="m18 19 4-4 4 4-4 4zm10 10 4-4 4 4-4 4z"/></svg></span>
+              <span class="card-copy"><strong>Presentaciones</strong><small>Residentes psiq.</small></span>
+            </a>
+          </div>
+        </section>
+
+        <section class="subpanel" aria-label="Recursos complementarios de enlace">
+          <div class="card-grid">
+            <a class="access-card span-4" href="https://drive.google.com/drive/u/0/folders/1853rukI4SMmydk-Cg77Kz77SlzJnGlUd" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="m8 15 16-7 16 7-16 7-16-7Z"/><path d="m8 24 16 7 16-7M8 33l16 7 16-7"/></svg></span>
+              <span class="card-copy"><strong>Temas de psiquiatría</strong></span>
+            </a>
+
+            <a class="access-card span-2" href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><span class="wordmark">OE</span></span>
+              <span class="card-copy"><strong>Open Evidence</strong></span>
+            </a>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-panel" aria-labelledby="ceif-title">
+        <header class="panel-heading">
+          <h2 id="ceif-title">Accesos CEIF</h2>
+          <span>COSAM CEIF Puente Alto</span>
+        </header>
+
+        <section class="group" aria-labelledby="sistemas-title">
+          <h3 class="group-title" id="sistemas-title">SISTEMAS CLÍNICOS</h3>
+          <div class="card-grid">
+            <a class="access-card" href="https://clinico.rayenaps.cl/#/actualizar-app" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 42c-8-8-13-14-13-22A13 13 0 0 1 37 20c0 8-5 14-13 22Z" fill="#4562b8"/><path d="M24 42c-1-13 2-22 11-27-1 12-4 20-11 27Z" fill="#56a86e"/><path d="M24 42c1-13-2-22-11-27 1 12 4 20 11 27Z" fill="#3e79c7"/><circle cx="24" cy="12" r="4" fill="#e9f0ff"/></svg></span>
+              <span class="card-copy"><strong>Rayen APS</strong><small>Ficha clínica</small></span>
+            </a>
+
+            <a class="access-card" href="https://cmesapa-my.sharepoint.com/personal/marco_donoso_cmpuentealto_cl/_layouts/15/onedrive.aspx?csf=1&amp;web=1&amp;e=qzdqSf&amp;CID=80d495ed%2D8f02%2D427d%2Da09d%2D93fd152ed6a1&amp;id=%2Fpersonal%2Fmarco%5Fdonoso%5Fcmpuentealto%5Fcl%2FDocuments%2FPCI%20%28PLANES%20DE%20CUIDADO%20INTEGRAL%29&amp;FolderCTID=0x0120001C19A6E1B19A7945BD39D8E611AF6657&amp;view=0" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13c8-3 14-1 19 4v25c-5-5-11-7-19-4V13Zm38 0c-8-3-14-1-19 4v25c5-5 11-7 19-4V13Z"/><path d="M15 6v6m-6-3 3 4m9-6-2 6m14-7v6m6-3-3 4m-9-6 2 6"/></svg></span>
+              <span class="card-copy"><strong>PCI</strong><small>Carpeta</small></span>
+            </a>
+          </div>
+        </section>
+
+        <section class="group" aria-labelledby="documentacion-title">
+          <h3 class="group-title" id="documentacion-title">DOCUMENTACIÓN</h3>
+          <div class="card-grid">
+            <a class="access-card span-3" href="https://drive.google.com/drive/folders/1DDZ4hBKfaiLzfcceaqOrzVUwdDuERBrd" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M5 13h14l4 5h20l-5 22H8L5 13Z"/><path d="M8 9h12l4 5h17l1 4H23l-4-5H8V9Z"/></svg></span>
+              <span class="card-copy"><strong>Pacientes CEIF</strong><small>Acceso carpeta</small></span>
+            </a>
+
+            <a class="access-card span-2" href="https://drive.google.com/drive/folders/1Me5bz1-nZPiQ_iw2JGnQzrMK5ihazujA" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M11 5h18l8 8v30H11z"/><path d="M29 5v9h8M17 21h14M17 28h14M17 35h10"/></svg></span>
+              <span class="card-copy"><strong>Formatos</strong></span>
+            </a>
+
+            <a class="access-card span-1" href="https://docs.google.com/document/d/1nRKoktTFIDMmOtkj_OADxF5eQlgLwKfm1pDz9NpV3t4/edit?tab=t.0" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento adicional">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6h18v8H15zM11 14h26v28H11z"/><circle cx="30" cy="33" r="5"/><path d="m34 37 5 4M18 22h12M18 28h7"/></svg></span>
+              <span class="sr-only">Documento adicional</span>
+            </a>
+
+            <a class="access-card span-2" href="https://docs.google.com/document/d/1Br_Vi4j6kiTLUf7fJsLGa2PQfGbJOFP1ZmM48fdYkYk/edit?tab=t.0" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M7 10h34v26H18l-8 7v-7H7z"/><path d="M15 19h18M15 27h11"/></svg></span>
+              <span class="card-copy"><strong>Ingreso</strong><small>Formato</small></span>
+            </a>
+
+            <a class="access-card span-2" href="https://docs.google.com/spreadsheets/d/1neVn74TlvdzN77jXS6uCIJWTvL6gzltwVEscelKqWmE/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><circle cx="24" cy="14" r="8"/><path d="M9 42c0-9 6-15 15-15s15 6 15 15H9Z"/></svg></span>
+              <span class="card-copy"><strong>IPD</strong></span>
+            </a>
+
+            <a class="access-card span-2" href="https://docs.google.com/spreadsheets/d/1DjsVWzrroGIN0yWRCikVRKv6JK2daPWz/edit?gid=1511189274#gid=1511189274" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon compact" aria-hidden="true"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 5C17 15 12 22 12 29a12 12 0 0 0 24 0c0-7-5-14-12-24Z"/></svg></span>
+              <span class="card-copy"><strong>Bionet</strong><small>Formato</small></span>
+            </a>
+          </div>
+        </section>
+
+        <section class="subpanel" aria-label="Correo institucional">
+          <a class="access-card span-6 mail-card" href="https://outlook.office.com/mail/?realm=cmpuentealto.cl&amp;login_hint=patricio.cerda@cmpuentealto.cl" target="_blank" rel="noopener noreferrer">
+            <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M5 11h25v27H5z"/><path d="M30 18h13v25H18v-5M5 14l12.5 11L30 14"/><path d="M35 9v9m-5-4.5h10"/></svg></span>
+            <span class="card-copy"><strong>Mail corporativo</strong><small>Correo institucional</small></span>
+          </a>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
