@@ -1,6 +1,6 @@
 {
-  "name": "Portal de Acceso Rápido",
-  "short_name": "Portal Clínico",
+  "name": "INICIO",
+  "short_name": "INICIO",
   "description": "Portal de acceso rápido a herramientas, sistemas clínicos y documentación.",
   "start_url": "./index.html",
   "display": "standalone",
