@@ -1,0 +1,21 @@
+{
+  "name": "Portal de Acceso Rápido",
+  "short_name": "Portal Clínico",
+  "description": "Portal de acceso rápido a herramientas, sistemas clínicos y documentación.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f6fa",
+  "theme_color": "#0b4773",
+  "icons": [
+    {
+      "src": "./icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
