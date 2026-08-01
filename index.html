@@ -7,6 +7,10 @@
   <meta name="description" content="Portal de acceso rápido a herramientas, sistemas clínicos y documentación.">
   <title>INICIO</title>
 
+  <!-- Etiquetas PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192x192.png">
+  
   <style>
     :root {
       --blue: #0b4773;
@@ -492,8 +496,6 @@
       }
     }
 
-    /* Ajuste exclusivo para pantallas de computador con poca altura.
-       Mantiene sin cambios la presentación móvil (880 px o menos). */
     @media (min-width: 881px) and (max-height: 900px) {
       .page {
         padding: 12px clamp(16px, 1.8vw, 26px) 18px;
@@ -844,5 +846,20 @@
       </section>
     </div>
   </main>
+
+  <!-- Script para registrar el Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('Service Worker registrado con éxito:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Error al registrar el Service Worker:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
