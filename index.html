@@ -184,6 +184,11 @@
       min-width: 0;
     }
 
+    /* Vida Nova ocupa todo el ancho disponible en escritorio. */
+    .vida-nova-panel {
+      grid-column: 1 / -1;
+    }
+
     .panel-heading {
       min-height: 59px;
       display: flex;
@@ -842,6 +847,51 @@
             <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linejoin="round"><path d="M5 11h25v27H5z"/><path d="M30 18h13v25H18v-5M5 14l12.5 11L30 14"/><path d="M35 9v9m-5-4.5h10"/></svg></span>
             <span class="card-copy"><strong>Mail corporativo</strong><small>Correo institucional</small></span>
           </a>
+        </section>
+      </section>
+
+      <section class="portal-panel vida-nova-panel" aria-labelledby="vida-nova-title">
+        <header class="panel-heading">
+          <h2 id="vida-nova-title">Vida Nova</h2>
+          <span>Accesos clínicos</span>
+        </header>
+
+        <section class="group" aria-labelledby="vida-nova-accesos-title">
+          <h3 class="group-title" id="vida-nova-accesos-title">ACCESOS</h3>
+          <div class="card-grid">
+            <a class="access-card span-2" href="https://drive.google.com/drive/u/0/folders/1Ivw9igDxtn8HqFxjZkecdWKnQBn5mC90" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 14h14l4 5h20v20H5z"/>
+                  <circle cx="27" cy="27" r="5"/>
+                  <path d="M18 39c1.2-5 4.2-8 9-8s7.8 3 9 8"/>
+                </svg>
+              </span>
+              <span class="card-copy"><strong>Pacientes</strong><small>Carpeta</small></span>
+            </a>
+
+            <a class="access-card span-2" href="https://prescripcion-receta.minsal.cl/auth/login" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5h18l7 7v31H12z"/>
+                  <path d="M30 5v8h7M18 21h13M18 28h8"/>
+                  <path d="M31 31v10M26 36h10"/>
+                </svg>
+              </span>
+              <span class="card-copy"><strong>Receta electrónica</strong><small>MINSAL</small></span>
+            </a>
+
+            <a class="access-card span-2" href="https://imed.cl/licencia-medica" target="_blank" rel="noopener noreferrer">
+              <span class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 5h20l7 7v31H11z"/>
+                  <path d="M31 5v8h7M17 21h15M17 28h10"/>
+                  <path d="m20 36 4 4 8-9"/>
+                </svg>
+              </span>
+              <span class="card-copy"><strong>LM</strong><small>Licencia médica</small></span>
+            </a>
+          </div>
         </section>
       </section>
     </div>
